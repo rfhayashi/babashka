@@ -2,7 +2,10 @@
   {:no-doc true}
   (:require [clojure.core.async :as async]
             [clojure.core.async.impl.protocols :as protocols]
+            [sci.core :as sci :refer [copy-var]]
             [sci.impl.vars :as vars]))
+
+(def tns (sci/create-ns 'clojure.core.async nil))
 
 (def ^java.util.concurrent.Executor executor @#'async/thread-macro-executor)
 
@@ -37,6 +40,41 @@
 (defn go-loop
   [_ _ bindings & body]
   (list 'clojure.core.async/thread (list* 'loop bindings body)))
+
+(defn go [& body]
+  (prn (macroexpand `(async/go ~@body))))
+
+#_(let* [c__5089__auto__ (clojure.core.async/chan 1)
+         captured-bindings__5090__auto__ (clojure.lang.Var/getThreadBindingFrame)]
+    (clojure.core.async.impl.dispatch/run
+      (fn* [] (clojure.core/let
+                  [f__5091__auto__ (clojure.core/fn state-machine__4852__auto__
+                                     ([]
+                                      (clojure.core.async.impl.ioc-macros/aset-all! (java.util.concurrent.atomic.AtomicReferenceArray. 6) 0 state-machine__4852__auto__ 1 1))
+                                     ([state_321]
+                                      (clojure.core/let [old-frame__4853__auto__
+                                                         (clojure.lang.Var/getThreadBindingFrame)
+                                                         ret-value__4854__auto__
+                                                         (try (clojure.lang.Var/resetThreadBindingFrame
+                                                               (clojure.core.async.impl.ioc-macros/aget-object state_321 3))
+                                                              (clojure.core/loop []
+                                                                (clojure.core/let [result__4855__auto__
+                                                                                   (clojure.core/case (clojure.core/int (clojure.core.async.impl.ioc-macros/aget-object state_321 1))
+                                                                                     1 (clojure.core/let [] (clojure.core.async.impl.ioc-macros/return-chan state_321 6)))]
+                                                                  (if (clojure.core/identical? result__4855__auto__ :recur)
+                                                                    (recur) result__4855__auto__)))
+                                                              (catch java.lang.Throwable ex__4856__auto__ (clojure.core.async.impl.ioc-macros/aset-all! state_321 2 ex__4856__auto__) (if (clojure.core/seq (clojure.core.async.impl.ioc-macros/aget-object state_321 4)) (clojure.core.async.impl.ioc-macros/aset-all! state_321 1 (clojure.core/first (clojure.core.async.impl.ioc-macros/aget-object state_321 4))) (throw ex__4856__auto__)) :recur)
+                                                              (finally (clojure.core.async.impl.ioc-macros/aset-object state_321 3 (clojure.lang.Var/getThreadBindingFrame))
+                                                                       (clojure.lang.Var/resetThreadBindingFrame old-frame__4853__auto__)))]
+                                        (if (clojure.core/identical? ret-value__4854__auto__ :recur)
+                                          (recur state_321)
+                                          ret-value__4854__auto__))))
+                   state__5092__auto__ (clojure.core/->
+                                        (f__5091__auto__)
+                                        (clojure.core.async.impl.ioc-macros/aset-all! clojure.core.async.impl.ioc-macros/USER-START-IDX c__5089__auto__
+                                                                                      clojure.core.async.impl.ioc-macros/BINDINGS-IDX captured-bindings__5090__auto__))]
+                (clojure.core.async.impl.ioc-macros/run-state-machine-wrapped state__5092__auto__))))
+    c__5089__auto__)
 
 (def async-namespace
   {'<!! async/<!!
@@ -99,7 +137,7 @@
    'untap async/untap
    'untap-all async/untap-all
    ;; polyfill
-   'go (with-meta thread {:sci/macro true})
+   'go go #_(copy-var async/go tns)#_(with-meta thread {:sci/macro true})
    '<! async/<!!
    '>! async/>!!
    'alt! (with-meta alt!! {:sci/macro true})
