@@ -38,6 +38,8 @@
                                :dependencies [[com.cognitect/transit-clj "1.0.324"]]}
              :feature/datascript {:source-paths ["feature-datascript"]
                                   :dependencies [[datascript "0.18.11"]]}
+             :feature/reitit {:source-paths ["feature-reitit"]
+                              :dependencies [[metosin/reitit-core "0.5.5"]]}
              :test [:feature/xml
                     :feature/yaml
                     :feature/postgresql
@@ -46,6 +48,7 @@
                     :feature/csv
                     :feature/transit
                     :feature/datascript
+                    :feature/reitit
                     {:dependencies [[clj-commons/conch "0.9.2"]
                                     [com.clojure-goes-fast/clj-async-profiler "0.4.1"]
                                     [com.opentable.components/otj-pg-embedded "0.13.3"]]}]

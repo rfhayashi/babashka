@@ -1,0 +1,6 @@
+(require '[reitit.core :as reitit])
+
+(def router (reitit/router [["/hello" :hello]]))
+
+(prn (reitit/match-by-path router "/hello"))
+

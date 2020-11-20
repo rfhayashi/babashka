@@ -9,6 +9,7 @@
 (def transit?    (not= "false" (System/getenv "BABASHKA_FEATURE_TRANSIT")))
 (def java-time?  (not= "false" (System/getenv "BABASHKA_FEATURE_JAVA_TIME")))
 (def java-nio?   (not= "false" (System/getenv "BABASHKA_FEATURE_JAVA_NIO")))
+(def reitit?     (not= "false" (System/getenv "BABASHKA_FEATURE_REITIT")))
 
 ;; excluded by default
 (def jdbc? (= "true" (System/getenv "BABASHKA_FEATURE_JDBC")))
